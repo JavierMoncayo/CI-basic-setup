@@ -1,30 +1,18 @@
-<?php
-
-defined ('BASEPATH') OR exit ('No direct script access allowed');
-
-class MY_Controller extends CI_Controller {
+class M_jMenuItems extends CI_Model {
 
   public function __construct () {
     parent::__construct ();
-
-    $this->loadThings ();
   }
 
-  private function loadThings () {
-    {
-      $toLoad['jsFolder'] = 'js/';
-      $toLoad['cssFolder'] = 'css/';
-      $toLoad['title'] = 'test =D';
-
-      $toLoad['js'] = array(
-          "jquery-3.2.1.min.js",
-          "gAnalytics.js");
-
-      $toLoad['css'] = array(
-          "myCss.css");
-
-      $this->load->view ('basic/header', $toLoad);
-    }
+  /**
+   * Get items in main menu depending of user access permision.
+   * @param int $access Default access set to "public".
+   * @return  Array of objects.
+   */
+  public function mGetMenuItems ( $access = 0 ) {
+    $sql = "SELECT * FROM jMenuItems WHERE accessItem < $access ORDER BY itemPosition ASC";
+    return $this->db->query ($sql)->result();
   }
 
 }
+
